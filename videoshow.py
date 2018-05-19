@@ -25,7 +25,7 @@ args = vars(ap.parse_args())
 # detect, then generate a set of bounding box colors for each class
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 	"bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
-	"dog", "horse", "motorbike", "person", "pottedplant", "sheep",
+	"dog", "horse", "motorbike", "chicken", "pottedplant", "sheep",
 	"sofa", "train", "tvmonitor"]
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
@@ -43,7 +43,7 @@ print("[INFO] starting video stream...")
 fps = FPS().start()
 
 cap = cv2.VideoCapture('1.mp4')
-
+out = cv2.VideoWriter('out.avi',-1, 20.0, (400,300))
 while(cap.isOpened()):
     ret, frame = cap.read()
     frame = imutils.resize(frame, width=400)
@@ -66,6 +66,9 @@ while(cap.isOpened()):
             y = startY - 15 if startY - 15 > 15 else startY + 15
             cv2.putText(frame, label, (startX, y),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+    frame = cv2.resize(frame, (400, 300))
+
+    out.write(frame)
     cv2.imshow('image', frame)
     k = cv2.waitKey(20)
     #q键退出
